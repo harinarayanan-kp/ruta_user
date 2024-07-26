@@ -29,12 +29,12 @@ class __BusRouteWidgetState extends State<_BusRouteWidget> with SingleTickerProv
   @override
   void initState() {
     super.initState();
-    _animationController = AnimationController(vsync: this, duration: Duration(seconds: 1));
+    _animationController = AnimationController(vsync: this, duration: const Duration(seconds: 1));
     _startBusRouteSimulation();
   }
 
   void _startBusRouteSimulation() {
-    _timer = Timer.periodic(Duration(seconds: 10), (timer) {
+    _timer = Timer.periodic(const Duration(seconds: 10), (timer) {
       if (currentStopIndex < destinations.length - 1) {
         setState(() {
           currentStopIndex++;
@@ -59,7 +59,7 @@ class __BusRouteWidgetState extends State<_BusRouteWidget> with SingleTickerProv
             child: Center(
               child: Text(
                 'Bus $busName',
-                style: TextStyle(
+                style: const TextStyle(
                   fontSize: 32,
                   fontWeight: FontWeight.bold,
                   color: Colors.black,
@@ -79,7 +79,7 @@ class __BusRouteWidgetState extends State<_BusRouteWidget> with SingleTickerProv
                       Column(
                         children: [
                           AnimatedContainer(
-                            duration: Duration(milliseconds: 300),
+                            duration: const Duration(milliseconds: 300),
                             height: 40,
                             width: 40,
                             decoration: BoxDecoration(
@@ -103,7 +103,7 @@ class __BusRouteWidgetState extends State<_BusRouteWidget> with SingleTickerProv
                             ),
                         ],
                       ),
-                      SizedBox(width: 16),
+                      const SizedBox(width: 16),
                       Expanded(
                         child: Card(
                           shape: RoundedRectangleBorder(
@@ -118,13 +118,13 @@ class __BusRouteWidgetState extends State<_BusRouteWidget> with SingleTickerProv
                               children: [
                                 Text(
                                   destination['destination']!,
-                                  style: TextStyle(
+                                  style: const TextStyle(
                                     fontSize: 22,
                                     fontWeight: FontWeight.bold,
                                     color: Colors.black87,
                                   ),
                                 ),
-                                SizedBox(height: 4),
+                                const SizedBox(height: 4),
                                 Text(
                                   destination['time']!,
                                   style: TextStyle(

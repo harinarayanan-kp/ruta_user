@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:ruta_user/models/place.dart';
 import 'package:ruta_user/screens/schedule.dart';
 
+// ignore: camel_case_types
 class setRouteScreen extends StatefulWidget {
   const setRouteScreen({super.key});
 
@@ -10,6 +11,7 @@ class setRouteScreen extends StatefulWidget {
   State<setRouteScreen> createState() => _setRouteScreenState();
 }
 
+// ignore: camel_case_types
 class _setRouteScreenState extends State<setRouteScreen> {
   final _fromController = TextEditingController();
   final _toController = TextEditingController();
@@ -18,7 +20,6 @@ class _setRouteScreenState extends State<setRouteScreen> {
   List<String> _allPlaceNames = [];
   List<String> _filteredFromPlaceNames = [];
   List<String> _filteredToPlaceNames = [];
-  bool _isLoading = true;
 
   @override
   void initState() {
@@ -41,9 +42,7 @@ class _setRouteScreenState extends State<setRouteScreen> {
   }
 
   Future<void> _fetchPlaceNames() async {
-    setState(() {
-      _isLoading = true;
-    });
+    setState(() {});
     try {
       QuerySnapshot snapshot =
           await FirebaseFirestore.instance.collection('locationData').get();
@@ -55,12 +54,9 @@ class _setRouteScreenState extends State<setRouteScreen> {
         _allPlaceNames = placeNames;
         _filteredFromPlaceNames = placeNames;
         _filteredToPlaceNames = placeNames;
-        _isLoading = false;
       });
     } catch (e) {
-      setState(() {
-        _isLoading = false;
-      });
+      setState(() {});
     }
   }
 

@@ -6,12 +6,15 @@ class WidgetScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: const Text("Settings"),
+      ),
       body: SafeArea(
         child: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
-              SizedBox(height: 32),
+              const SizedBox(height: 32),
               _buildTile(
                 icon: Icons.help_outline,
                 title: 'HELP',
@@ -20,7 +23,7 @@ class WidgetScreen extends StatelessWidget {
                   // Add your help action here
                 },
               ),
-              SizedBox(height: 16),
+              const SizedBox(height: 16),
               _buildTile(
                 icon: Icons.info_outline,
                 title: 'ABOUT',
@@ -29,7 +32,7 @@ class WidgetScreen extends StatelessWidget {
                   // Add your about action here
                 },
               ),
-              SizedBox(height: 32), // Space between tiles and sign out button
+              const SizedBox(height: 32), // Space between tiles and sign out button
               _logout(context)
             ],
           ),
@@ -64,11 +67,11 @@ class WidgetScreen extends StatelessWidget {
         child: Container(
           height: 80, // Fixed height for a more compact tile
           width: 280, // Adjust width if needed
-          padding: EdgeInsets.all(8), // Reduced padding
+          padding: const EdgeInsets.all(8), // Reduced padding
           child: Row(
             children: [
               Icon(icon, size: 30), // Smaller icon size
-              SizedBox(width: 8), // Space between icon and text
+              const SizedBox(width: 8), // Space between icon and text
               Expanded(
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -77,10 +80,10 @@ class WidgetScreen extends StatelessWidget {
                     Text(
                       title,
                       style:
-                          TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                          const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                     ),
                     if (description.isNotEmpty) ...[
-                      SizedBox(height: 4),
+                      const SizedBox(height: 4),
                       Text(
                         description,
                         style: TextStyle(fontSize: 12, color: Colors.grey[600]),

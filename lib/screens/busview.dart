@@ -95,7 +95,7 @@ class _MapScreenState extends State<BusMapScreen> {
               onPressed: () async {
                 await AuthService().signout(context: context);
               },
-              icon: Icon(Icons.logout))
+              icon: const Icon(Icons.logout))
         ],
       ),
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
@@ -138,19 +138,20 @@ class _MapScreenState extends State<BusMapScreen> {
               ),
             ),
             Padding(
-              padding: EdgeInsets.all(20),
+              padding: const EdgeInsets.all(20),
               child: Column(
                 children: [
                   SizedBox(
                     height: 50,
                     child: Container(
                       decoration: BoxDecoration(
-                          borderRadius: BorderRadius.all(Radius.circular(10)),
+                          borderRadius:
+                              const BorderRadius.all(Radius.circular(10)),
                           color: Theme.of(context)
                               .colorScheme
                               .secondary
                               .withOpacity(0.5)),
-                      child: Center(
+                      child: const Center(
                         child: Text(
                           'data',
                           selectionColor: Colors.black,
@@ -158,17 +159,18 @@ class _MapScreenState extends State<BusMapScreen> {
                       ),
                     ),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 10,
                   ),
                   SizedBox(
                     height: 50,
                     child: Container(
                       decoration: BoxDecoration(
-                        borderRadius: BorderRadius.all(Radius.circular(10)),
+                        borderRadius:
+                            const BorderRadius.all(Radius.circular(10)),
                         color: Theme.of(context).colorScheme.secondary,
                       ),
-                      child: Center(
+                      child: const Center(
                         child: Text(
                           'data',
                           selectionColor: Colors.black,
@@ -176,19 +178,20 @@ class _MapScreenState extends State<BusMapScreen> {
                       ),
                     ),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 10,
                   ),
                   SizedBox(
                     height: 50,
                     child: Container(
                       decoration: BoxDecoration(
-                          borderRadius: BorderRadius.all(Radius.circular(10)),
+                          borderRadius:
+                              const BorderRadius.all(Radius.circular(10)),
                           color: Theme.of(context)
                               .colorScheme
                               .secondary
                               .withOpacity(0.5)),
-                      child: Center(
+                      child: const Center(
                         child: Text(
                           'data',
                           selectionColor: Colors.black,

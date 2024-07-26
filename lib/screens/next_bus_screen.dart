@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:ruta_user/screens/busStop_screen.dart';
-import 'package:ruta_user/services/auth_services.dart';
 
 class BusListScreen extends StatefulWidget {
   const BusListScreen({super.key});
 
   @override
+  // ignore: library_private_types_in_public_api
   _BusListScreenState createState() => _BusListScreenState();
 }
 
@@ -33,9 +33,8 @@ class _BusListScreenState extends State<BusListScreen> {
           selectedPlace = places.first;
         }
       });
-    } catch (e) {
-      print('Error fetching places: $e');
-    }
+    // ignore: empty_catches
+    } catch (e) {}
   }
 
   Future<List<QueryDocumentSnapshot>> _getBusesWithSelectedStop() async {
@@ -60,11 +59,11 @@ class _BusListScreenState extends State<BusListScreen> {
       child: SafeArea(
         child: Column(
           children: [
-            _logout(context),
+            // _logout(context),
             Padding(
               padding: const EdgeInsets.all(16.0),
               child: places.isEmpty
-                  ? Center(child: CircularProgressIndicator())
+                  ? const Center(child: CircularProgressIndicator())
                   : DropdownButton<String>(
                       value: selectedPlace,
                       onChanged: (newValue) {
@@ -86,7 +85,7 @@ class _BusListScreenState extends State<BusListScreen> {
                 future: _getBusesWithSelectedStop(),
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
-                    return Center(child: CircularProgressIndicator());
+                    return const Center(child: CircularProgressIndicator());
                   }
                   if (!snapshot.hasData || snapshot.data!.isEmpty) {
                     return Center(
@@ -103,7 +102,7 @@ class _BusListScreenState extends State<BusListScreen> {
                             vertical: 8.0, horizontal: 16.0),
                         child: ListTile(
                           leading:
-                              Icon(Icons.directions_bus, color: Colors.blue),
+                              const Icon(Icons.directions_bus, color: Colors.blue),
                           title: Text(bus['name']),
                           onTap: () {
                             Navigator.push(
@@ -127,12 +126,4 @@ class _BusListScreenState extends State<BusListScreen> {
     );
   }
 
-  Widget _logout(BuildContext context) {
-    return ElevatedButton(
-      onPressed: () async {
-        await AuthService().signout(context: context);
-      },
-      child: const Text("Sign Out"),
-    );
-  }
 }

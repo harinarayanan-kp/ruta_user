@@ -1,6 +1,7 @@
 import 'package:dynamic_color/dynamic_color.dart';
 import 'package:flutter/material.dart';
 import 'package:ruta_user/firebase_options.dart';
+// ignore: depend_on_referenced_packages
 import 'package:firebase_core/firebase_core.dart';
 import 'package:ruta_user/screens/busview.dart';
 import 'package:ruta_user/screens/home_screen.dart';
@@ -25,12 +26,12 @@ class MyApp extends StatelessWidget {
     return DynamicColorBuilder(
         builder: (ColorScheme? lightdynamic, ColorScheme? dark) {
       ColorScheme lightcolorscheme;
-      ColorScheme darkcolorscheme;
+      // ColorScheme darkcolorscheme;
       if (lightdynamic != null && dark != null) {
         lightcolorscheme = lightdynamic.harmonized()..copyWith();
         lightcolorscheme =
             lightcolorscheme.copyWith(secondary: defaultcolorscheme);
-        darkcolorscheme = dark.harmonized();
+        // darkcolorscheme = dark.harmonized();
       } else {
         lightcolorscheme = ColorScheme.fromSeed(seedColor: defaultcolorscheme);
       }

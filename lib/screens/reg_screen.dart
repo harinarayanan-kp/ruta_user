@@ -23,7 +23,7 @@ class _UserTypeSelectorState extends State<UserTypeSelector> {
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
+          const Text(
               style: TextStyle(
                   color: Colors.black,
                   fontWeight: FontWeight.normal,
@@ -42,8 +42,8 @@ class _UserTypeSelectorState extends State<UserTypeSelector> {
                   });
                 },
               ),
-              Text('Passenger'),
-              SizedBox(width: 20),
+              const Text('Passenger'),
+              const SizedBox(width: 20),
               Radio<String>(
                 value: 'Driver',
                 groupValue: _selectedUserType,
@@ -54,7 +54,7 @@ class _UserTypeSelectorState extends State<UserTypeSelector> {
                   });
                 },
               ),
-              Text('Driver'),
+              const Text('Driver'),
             ],
           ),
         ],
