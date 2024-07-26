@@ -4,6 +4,11 @@ import 'package:ruta_user/screens/login_screen.dart';
 import 'package:ruta_user/services/auth_services.dart';
 
 class UserTypeSelector extends StatefulWidget {
+  final ValueChanged<String>
+      onUserTypeChanged; // Callback for user type changes
+
+  UserTypeSelector({required this.onUserTypeChanged});
+
   @override
   _UserTypeSelectorState createState() => _UserTypeSelectorState();
 }
@@ -30,16 +35,24 @@ class _UserTypeSelectorState extends State<UserTypeSelector> {
               Radio<String>(
                 value: 'Passenger',
                 groupValue: _selectedUserType,
-                onChanged: (value) =>
-                    setState(() => _selectedUserType = value!),
+                onChanged: (value) {
+                  setState(() {
+                    _selectedUserType = value!;
+                    widget.onUserTypeChanged(_selectedUserType);
+                  });
+                },
               ),
               Text('Passenger'),
-              SizedBox(width: 20), // Add some space between the options
+              SizedBox(width: 20),
               Radio<String>(
                 value: 'Driver',
                 groupValue: _selectedUserType,
-                onChanged: (value) =>
-                    setState(() => _selectedUserType = value!),
+                onChanged: (value) {
+                  setState(() {
+                    _selectedUserType = value!;
+                    widget.onUserTypeChanged(_selectedUserType);
+                  });
+                },
               ),
               Text('Driver'),
             ],
@@ -50,13 +63,18 @@ class _UserTypeSelectorState extends State<UserTypeSelector> {
   }
 }
 
-class Signup extends StatelessWidget {
+class Signup extends StatefulWidget {
   Signup({super.key});
 
+  @override
+  _SignupState createState() => _SignupState();
+}
+
+class _SignupState extends State<Signup> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
-  final TextEditingController _displayNameController =
-      TextEditingController(); // Added controller
+  final TextEditingController _displayNameController = TextEditingController();
+  String _selectedUserType = 'Passenger'; // Track selected user type
 
   @override
   Widget build(BuildContext context) {
@@ -85,7 +103,7 @@ class Signup extends StatelessWidget {
                   const SizedBox(
                     height: 80,
                   ),
-                  _displayName(), // Added TextFormField for display name
+                  _displayName(),
                   const SizedBox(
                     height: 20,
                   ),
@@ -97,7 +115,13 @@ class Signup extends StatelessWidget {
                   const SizedBox(
                     height: 20,
                   ),
-                  UserTypeSelector(),
+                  UserTypeSelector(
+                    onUserTypeChanged: (userType) {
+                      setState(() {
+                        _selectedUserType = userType;
+                      });
+                    },
+                  ),
                   const SizedBox(
                     height: 20,
                   ),
@@ -212,12 +236,21 @@ class Signup extends StatelessWidget {
         elevation: 0,
       ),
       onPressed: () async {
-        await AuthService().signup(
-          email: _emailController.text,
-          password: _passwordController.text,
-          displayName: _displayNameController.text, // Pass display name
-          context: context,
-        );
+        if (_selectedUserType == 'Driver') {
+          await AuthService().driverSignup(
+            email: _emailController.text,
+            password: _passwordController.text,
+            displayName: _displayNameController.text,
+            context: context,
+          );
+        } else {
+          await AuthService().signup(
+            email: _emailController.text,
+            password: _passwordController.text,
+            displayName: _displayNameController.text,
+            context: context,
+          );
+        }
       },
       child: const Text("Sign Up"),
     );

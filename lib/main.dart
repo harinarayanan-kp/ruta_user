@@ -1,15 +1,12 @@
 import 'package:dynamic_color/dynamic_color.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:ruta_user/firebase_options.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:ruta_user/screens/busstop.dart';
+import 'package:ruta_user/screens/busview.dart';
 import 'package:ruta_user/screens/home_screen.dart';
 import 'package:ruta_user/screens/login_screen.dart';
-import 'package:ruta_user/screens/map_screen.dart';
-import 'package:ruta_user/screens/next_bus_screen.dart';
 import 'package:ruta_user/screens/reg_screen.dart';
-import 'package:ruta_user/screens/schedule.dart';
+import 'package:ruta_user/screens/signout_screen.dart';
 import 'package:ruta_user/screens/to_from_screen.dart';
 import 'package:ruta_user/wrapper.dart';
 
@@ -44,12 +41,14 @@ class MyApp extends StatelessWidget {
             colorScheme: lightcolorscheme,
             useMaterial3: true,
             scaffoldBackgroundColor: lightcolorscheme.surfaceBright),
-        home: HomeScreen(),
+        home: const Wrapper(),
         routes: {
           '/login': (context) => Login(),
           '/home': (context) => const HomeScreen(),
           '/register': (context) => Signup(),
           '/route': (context) => const setRouteScreen(),
+          '/settings': (context) => WidgetScreen(),
+          '/driver': (context) => const BusMapScreen(),
         },
       );
     });

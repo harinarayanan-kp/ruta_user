@@ -1,43 +1,49 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart'; // Import for SystemNavigator
+import 'package:flutter/services.dart';
+import 'package:ruta_user/services/auth_services.dart'; // Import for SystemNavigator
 
 class WidgetScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            // Tiles for HELP and ABOUT
-            _buildTile(
-              icon: Icons.help_outline,
-              title: 'HELP',
-              description: 'Contact, FAQs, Manuals, Privacy',
-              onPressed: () {
-                // Add your help action here
-              },
-            ),
-            SizedBox(height: 16), // Space between tiles
-            _buildTile(
-              icon: Icons.info_outline,
-              title: 'ABOUT',
-              description: '', // No description for ABOUT
-              onPressed: () {
-                // Add your about action here
-              },
-            ),
-            SizedBox(height: 32), // Space between tiles and sign out button
-            ElevatedButton(
-              onPressed: () {
-                // Exit the app
-                SystemNavigator.pop();
-              },
-              child: Text('SIGN OUT'),
-            ),
-          ],
+      body: SafeArea(
+        child: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              SizedBox(height: 32),
+              _buildTile(
+                icon: Icons.help_outline,
+                title: 'HELP',
+                description: 'Contact, FAQs, Manuals, Privacy',
+                onPressed: () {
+                  // Add your help action here
+                },
+              ),
+              SizedBox(height: 16),
+              _buildTile(
+                icon: Icons.info_outline,
+                title: 'ABOUT',
+                description: '', // No description for ABOUT
+                onPressed: () {
+                  // Add your about action here
+                },
+              ),
+              SizedBox(height: 32), // Space between tiles and sign out button
+              _logout(context)
+            ],
+          ),
         ),
       ),
+    );
+  }
+
+  Widget _logout(BuildContext context) {
+    return ElevatedButton(
+      onPressed: () async {
+        await AuthService().signout(context: context);
+      },
+      child: const Text("Sign Out"),
     );
   }
 
@@ -70,15 +76,18 @@ class WidgetScreen extends StatelessWidget {
                   children: [
                     Text(
                       title,
-                      style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                      style:
+                          TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                     ),
                     if (description.isNotEmpty) ...[
                       SizedBox(height: 4),
                       Text(
                         description,
                         style: TextStyle(fontSize: 12, color: Colors.grey[600]),
-                        overflow: TextOverflow.ellipsis, // Ellipsis if text overflows
-                        maxLines: 2, // Limit the number of lines for description
+                        overflow:
+                            TextOverflow.ellipsis, // Ellipsis if text overflows
+                        maxLines:
+                            2, // Limit the number of lines for description
                       ),
                     ],
                   ],
