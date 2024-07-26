@@ -104,68 +104,65 @@ class _setRouteScreenState extends State<setRouteScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.white,
-      body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
-          child: SingleChildScrollView(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Row(
-                  children: [
-                    Expanded(
-                      child: TextFormField(
-                        controller: _fromController,
-                        focusNode: _fromFocusNode,
-                        decoration: const InputDecoration(
-                          labelText: 'From',
-                          border: OutlineInputBorder(),
-                        ),
-                        onChanged: (value) => _filterPlaceNames(value, true),
+    return SafeArea(
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+        child: SingleChildScrollView(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Row(
+                children: [
+                  Expanded(
+                    child: TextFormField(
+                      controller: _fromController,
+                      focusNode: _fromFocusNode,
+                      decoration: const InputDecoration(
+                        labelText: 'From',
+                        border: OutlineInputBorder(),
                       ),
+                      onChanged: (value) => _filterPlaceNames(value, true),
                     ),
-                    const SizedBox(width: 16), // Spacer between the fields
-                    Expanded(
-                      child: TextFormField(
-                        controller: _toController,
-                        focusNode: _toFocusNode,
-                        decoration: const InputDecoration(
-                          labelText: 'To',
-                          border: OutlineInputBorder(),
-                        ),
-                        onChanged: (value) => _filterPlaceNames(value, false),
+                  ),
+                  const SizedBox(width: 16), // Spacer between the fields
+                  Expanded(
+                    child: TextFormField(
+                      controller: _toController,
+                      focusNode: _toFocusNode,
+                      decoration: const InputDecoration(
+                        labelText: 'To',
+                        border: OutlineInputBorder(),
                       ),
+                      onChanged: (value) => _filterPlaceNames(value, false),
                     ),
-                  ],
+                  ),
+                ],
+              ),
+              const SizedBox(height: 10),
+
+              // Display filtered place names as dropdown suggestions
+              if (_filteredFromPlaceNames.isNotEmpty)
+                _buildDropdownSuggestions(
+                  _fromController,
+                  _filteredFromPlaceNames,
+                  (placeName) => _handleSelection(placeName, _fromController),
                 ),
-                const SizedBox(height: 10),
-
-                // Display filtered place names as dropdown suggestions
-                if (_filteredFromPlaceNames.isNotEmpty)
-                  _buildDropdownSuggestions(
-                    _fromController,
-                    _filteredFromPlaceNames,
-                    (placeName) => _handleSelection(placeName, _fromController),
-                  ),
-                const SizedBox(height: 20),
-                if (_filteredToPlaceNames.isNotEmpty)
-                  _buildDropdownSuggestions(
-                    _toController,
-                    _filteredToPlaceNames,
-                    (placeName) => _handleSelection(placeName, _toController),
-                  ),
-
-                // Submit button
-                ElevatedButton(
-                  onPressed: _submit,
-                  child: const Text("Submit"),
+              const SizedBox(height: 20),
+              if (_filteredToPlaceNames.isNotEmpty)
+                _buildDropdownSuggestions(
+                  _toController,
+                  _filteredToPlaceNames,
+                  (placeName) => _handleSelection(placeName, _toController),
                 ),
 
-                const SizedBox(height: 30),
-              ],
-            ),
+              // Submit button
+              ElevatedButton(
+                onPressed: _submit,
+                child: const Text("Submit"),
+              ),
+
+              const SizedBox(height: 30),
+            ],
           ),
         ),
       ),

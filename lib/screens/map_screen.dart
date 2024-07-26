@@ -87,45 +87,38 @@ class _MapScreenState extends State<MapScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      elevation: 10,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-      child: ClipRRect(
-        borderRadius: BorderRadius.circular(20),
-        child: SizedBox(
-          height: 500,
-          width: 500,
-          child: Stack(
-            children: [
-              if (_isLoading)
-                const Center(
-                  child: CircularProgressIndicator(),
+    return SizedBox(
+      height: MediaQuery.of(context).size.height,
+      width: MediaQuery.of(context).size.width,
+      child: Stack(
+        children: [
+          if (_isLoading)
+            const Center(
+              child: CircularProgressIndicator(),
+            ),
+          if (_locationError)
+            const Center(
+              child: Text(
+                'Location services are disabled. Please enable them.',
+                textAlign: TextAlign.center,
+                style:
+                    TextStyle(color: Colors.red, fontWeight: FontWeight.bold),
+              ),
+            ),
+          if (!_isLoading && !_locationError)
+            GoogleMap(
+              onMapCreated: _onMapCreated,
+              myLocationButtonEnabled: true,
+              myLocationEnabled: true,
+              zoomControlsEnabled: false,
+              initialCameraPosition: _cameraPosition!,
+              gestureRecognizers: <Factory<OneSequenceGestureRecognizer>>{
+                Factory<OneSequenceGestureRecognizer>(
+                  () => EagerGestureRecognizer(),
                 ),
-              if (_locationError)
-                const Center(
-                  child: Text(
-                    'Location services are disabled. Please enable them.',
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                        color: Colors.red, fontWeight: FontWeight.bold),
-                  ),
-                ),
-              if (!_isLoading && !_locationError)
-                GoogleMap(
-                  onMapCreated: _onMapCreated,
-                  myLocationButtonEnabled: true,
-                  myLocationEnabled: true,
-                  zoomControlsEnabled: false,
-                  initialCameraPosition: _cameraPosition!,
-                  gestureRecognizers: <Factory<OneSequenceGestureRecognizer>>{
-                    Factory<OneSequenceGestureRecognizer>(
-                      () => EagerGestureRecognizer(),
-                    ),
-                  },
-                ),
-            ],
-          ),
-        ),
+              },
+            ),
+        ],
       ),
     );
   }

@@ -1,8 +1,10 @@
+import 'package:bottom_navy_bar/bottom_navy_bar.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:ruta_user/models/place.dart';
 import 'package:ruta_user/screens/map_screen.dart';
+import 'package:ruta_user/screens/to_from_screen.dart';
 import 'package:ruta_user/services/auth_services.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -13,132 +15,55 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  final _fromController = TextEditingController();
-  final _toController = TextEditingController();
-  final _fromFocusNode = FocusNode();
-  final _toFocusNode = FocusNode();
-  List<String> _allPlaceNames = [];
-  List<String> _filteredFromPlaceNames = [];
-  List<String> _filteredToPlaceNames = [];
-  bool _isLoading = true;
+  int _selectedIndex = 0;
 
-  @override
-  void initState() {
-    super.initState();
-    _fetchPlaceNames();
-    _fromFocusNode.addListener(() {
-      if (!_fromFocusNode.hasFocus) {
-        setState(() {
-          _filteredFromPlaceNames = [];
-        });
-      }
-    });
-    _toFocusNode.addListener(() {
-      if (!_toFocusNode.hasFocus) {
-        setState(() {
-          _filteredToPlaceNames = [];
-        });
-      }
-    });
-  }
+  final bool _isLoading = false;
 
-  Future<void> _fetchPlaceNames() async {
+  static const List<Widget> _widgetOptions = <Widget>[
+    MapScreen(),
+    setRouteScreen(),
+    Center(child: Text('Profile Page')),
+  ];
+
+  void _onItemTapped(int index) {
     setState(() {
-      _isLoading = true;
+      _selectedIndex = index;
     });
-    try {
-      QuerySnapshot snapshot =
-          await FirebaseFirestore.instance.collection('locationData').get();
-      final placeNames = snapshot.docs
-          .map((doc) =>
-              Place.fromFirestore(doc.data() as Map<String, dynamic>).placeName)
-          .toList();
-      setState(() {
-        _allPlaceNames = placeNames;
-        _filteredFromPlaceNames = placeNames;
-        _filteredToPlaceNames = placeNames;
-        _isLoading = false;
-      });
-    } catch (e) {
-      setState(() {
-        _isLoading = false;
-      });
-    }
-  }
-
-  void _filterPlaceNames(String query, bool isFrom) {
-    setState(() {
-      if (isFrom) {
-        _filteredFromPlaceNames = _allPlaceNames
-            .where((placeName) =>
-                placeName.toLowerCase().contains(query.toLowerCase()))
-            .toList();
-      } else {
-        _filteredToPlaceNames = _allPlaceNames
-            .where((placeName) =>
-                placeName.toLowerCase().contains(query.toLowerCase()))
-            .toList();
-      }
-    });
-  }
-
-  void _handleSelection(String placeName, TextEditingController controller) {
-    setState(() {
-      controller.text = placeName;
-      _filteredFromPlaceNames = _allPlaceNames;
-      _filteredToPlaceNames = _allPlaceNames;
-    });
-    FocusScope.of(context).unfocus();
-  }
-
-  void _submit() {
-    final fromPlace = _fromController.text;
-    final toPlace = _toController.text;
-    if (fromPlace.isNotEmpty && toPlace.isNotEmpty) {
-      // Navigate to the schedules screen
-      Navigator.pushNamed(context, '/schedule');
-    } else {
-      // Handle case where one or both fields are empty
-    }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: const Text('RUTA'),
+      ),
+      bottomNavigationBar: BottomNavyBar(
+        selectedIndex: _selectedIndex,
+        onItemSelected: _onItemTapped,
+        items: <BottomNavyBarItem>[
+          BottomNavyBarItem(
+            icon: const Icon(Icons.map),
+            title: const Text('Map'),
+          ),
+          BottomNavyBarItem(
+            icon: const Icon(Icons.search),
+            title: const Text('Search'),
+          ),
+          BottomNavyBarItem(
+            icon: const Icon(Icons.person),
+            title: const Text('Profile'),
+          ),
+        ],
+      ),
       backgroundColor: Colors.white,
       body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
-          child: SingleChildScrollView(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                const Text('Hello👋',
-                    style: TextStyle(
-                        color: Colors.black,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 20)),
-
-                Text(
-                  FirebaseAuth.instance.currentUser?.email ?? 'No user',
-                  style: const TextStyle(
-                      color: Colors.black,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 20),
-                ),
-                const SizedBox(height: 16),
-                // Show loading spinner if _isLoading is true
-                if (_isLoading)
-                  const Center(child: CircularProgressIndicator()),
-                if (!_isLoading) const MapScreen(),
-                const SizedBox(height: 30),
-
-                
-
-                const SizedBox(height: 30),
-                _logout(context),
-              ],
-            ),
+        child: SingleChildScrollView(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              if (_isLoading) const Center(child: CircularProgressIndicator()),
+              if (!_isLoading) _widgetOptions.elementAt(_selectedIndex),
+            ],
           ),
         ),
       ),
