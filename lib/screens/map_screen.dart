@@ -113,7 +113,8 @@ class _MapScreenState extends State<MapScreen> {
               if (!_isLoading && !_locationError)
                 GoogleMap(
                   onMapCreated: _onMapCreated,
-                  myLocationButtonEnabled: false,
+                  myLocationButtonEnabled: true,
+                  myLocationEnabled: true,
                   zoomControlsEnabled: false,
                   initialCameraPosition: _cameraPosition!,
                   gestureRecognizers: <Factory<OneSequenceGestureRecognizer>>{

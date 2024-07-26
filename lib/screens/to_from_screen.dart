@@ -5,14 +5,14 @@ import 'package:ruta_user/models/place.dart';
 import 'package:ruta_user/screens/map_screen.dart';
 import 'package:ruta_user/services/auth_services.dart';
 
-class HomeScreen extends StatefulWidget {
-  const HomeScreen({super.key});
+class setRouteScreen extends StatefulWidget {
+  const setRouteScreen({super.key});
 
   @override
-  State<HomeScreen> createState() => _HomeScreenState();
+  State<setRouteScreen> createState() => _setRouteScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen> {
+class _setRouteScreenState extends State<setRouteScreen> {
   final _fromController = TextEditingController();
   final _toController = TextEditingController();
   final _fromFocusNode = FocusNode();
@@ -113,30 +113,57 @@ class _HomeScreenState extends State<HomeScreen> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                const Text('Hello👋',
-                    style: TextStyle(
-                        color: Colors.black,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 20)),
-
-                Text(
-                  FirebaseAuth.instance.currentUser?.email ?? 'No user',
-                  style: const TextStyle(
-                      color: Colors.black,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 20),
+                Row(
+                  children: [
+                    Expanded(
+                      child: TextFormField(
+                        controller: _fromController,
+                        focusNode: _fromFocusNode,
+                        decoration: const InputDecoration(
+                          labelText: 'From',
+                          border: OutlineInputBorder(),
+                        ),
+                        onChanged: (value) => _filterPlaceNames(value, true),
+                      ),
+                    ),
+                    const SizedBox(width: 16), // Spacer between the fields
+                    Expanded(
+                      child: TextFormField(
+                        controller: _toController,
+                        focusNode: _toFocusNode,
+                        decoration: const InputDecoration(
+                          labelText: 'To',
+                          border: OutlineInputBorder(),
+                        ),
+                        onChanged: (value) => _filterPlaceNames(value, false),
+                      ),
+                    ),
+                  ],
                 ),
-                const SizedBox(height: 16),
-                // Show loading spinner if _isLoading is true
-                if (_isLoading)
-                  const Center(child: CircularProgressIndicator()),
-                if (!_isLoading) const MapScreen(),
-                const SizedBox(height: 30),
+                const SizedBox(height: 10),
 
-                
+                // Display filtered place names as dropdown suggestions
+                if (_filteredFromPlaceNames.isNotEmpty)
+                  _buildDropdownSuggestions(
+                    _fromController,
+                    _filteredFromPlaceNames,
+                    (placeName) => _handleSelection(placeName, _fromController),
+                  ),
+                const SizedBox(height: 20),
+                if (_filteredToPlaceNames.isNotEmpty)
+                  _buildDropdownSuggestions(
+                    _toController,
+                    _filteredToPlaceNames,
+                    (placeName) => _handleSelection(placeName, _toController),
+                  ),
+
+                // Submit button
+                ElevatedButton(
+                  onPressed: _submit,
+                  child: const Text("Submit"),
+                ),
 
                 const SizedBox(height: 30),
-                _logout(context),
               ],
             ),
           ),
@@ -145,12 +172,34 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  Widget _logout(BuildContext context) {
-    return ElevatedButton(
-      onPressed: () async {
-        await AuthService().signout(context: context);
-      },
-      child: const Text("Sign Out"),
+  Widget _buildDropdownSuggestions(
+    TextEditingController controller,
+    List<String> suggestions,
+    void Function(String) onSelect,
+  ) {
+    final limitedSuggestions = suggestions.take(3).toList();
+
+    return Visibility(
+      visible: controller.text.isNotEmpty,
+      child: Container(
+        padding: const EdgeInsets.symmetric(vertical: 8),
+        decoration: BoxDecoration(
+          border: Border.all(color: Colors.grey),
+          borderRadius: BorderRadius.circular(4),
+        ),
+        child: ListView(
+          shrinkWrap: true,
+          children: limitedSuggestions
+              .map((placeName) => ListTile(
+                    title: Text(placeName),
+                    onTap: () {
+                      onSelect(placeName);
+                      FocusScope.of(context).unfocus();
+                    },
+                  ))
+              .toList(),
+        ),
+      ),
     );
   }
 }

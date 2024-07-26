@@ -4,6 +4,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:ruta_user/screens/home_screen.dart';
 import 'package:ruta_user/screens/login_screen.dart';
 import 'package:ruta_user/screens/reg_screen.dart';
+import 'package:ruta_user/screens/to_from_screen.dart';
 import 'package:ruta_user/wrapper.dart';
 
 void main() async {
