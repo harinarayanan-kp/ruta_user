@@ -3,6 +3,53 @@ import 'package:flutter/material.dart';
 import 'package:ruta_user/screens/login_screen.dart';
 import 'package:ruta_user/services/auth_services.dart';
 
+class UserTypeSelector extends StatefulWidget {
+  @override
+  _UserTypeSelectorState createState() => _UserTypeSelectorState();
+}
+
+class _UserTypeSelectorState extends State<UserTypeSelector> {
+  String _selectedUserType = 'Passenger';
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+              style: TextStyle(
+                  color: Colors.black,
+                  fontWeight: FontWeight.normal,
+                  fontSize: 16),
+              'Are you a'),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: <Widget>[
+              Radio<String>(
+                value: 'Passenger',
+                groupValue: _selectedUserType,
+                onChanged: (value) =>
+                    setState(() => _selectedUserType = value!),
+              ),
+              Text('Passenger'),
+              SizedBox(width: 20), // Add some space between the options
+              Radio<String>(
+                value: 'Driver',
+                groupValue: _selectedUserType,
+                onChanged: (value) =>
+                    setState(() => _selectedUserType = value!),
+              ),
+              Text('Driver'),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+}
+
 class Signup extends StatelessWidget {
   Signup({super.key});
 
@@ -13,50 +60,56 @@ class Signup extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        backgroundColor: Colors.white,
-        resizeToAvoidBottomInset: true,
-        bottomNavigationBar: _signin(context),
-        appBar: AppBar(
-          backgroundColor: Colors.transparent,
-          elevation: 0,
-          toolbarHeight: 50,
-        ),
-        body: SafeArea(
-          child: SingleChildScrollView(
-            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
-            child: Column(
-              children: [
-                const Center(
-                  child: Text('Register Account',
-                      style: TextStyle(
-                          color: Colors.black,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 32)),
-                ),
-                const SizedBox(
-                  height: 80,
-                ),
-                _displayName(), // Added TextFormField for display name
-                const SizedBox(
-                  height: 20,
-                ),
-                _emailAddress(),
-                const SizedBox(
-                  height: 20,
-                ),
-                _password(),
-                const SizedBox(
-                  height: 20,
-                ),
-                const SizedBox(
-                  height: 50,
-                ),
-                _signup(context),
-              ],
-            ),
+    return Container(
+      color: Theme.of(context).scaffoldBackgroundColor,
+      child: Scaffold(
+          resizeToAvoidBottomInset: true,
+          bottomNavigationBar: _signin(context),
+          appBar: AppBar(
+            backgroundColor: Colors.transparent,
+            elevation: 0,
+            toolbarHeight: 50,
           ),
-        ));
+          body: SafeArea(
+            child: SingleChildScrollView(
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+              child: Column(
+                children: [
+                  const Center(
+                    child: Text('Register Account',
+                        style: TextStyle(
+                            color: Colors.black,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 32)),
+                  ),
+                  const SizedBox(
+                    height: 80,
+                  ),
+                  _displayName(), // Added TextFormField for display name
+                  const SizedBox(
+                    height: 20,
+                  ),
+                  _emailAddress(),
+                  const SizedBox(
+                    height: 20,
+                  ),
+                  _password(),
+                  const SizedBox(
+                    height: 20,
+                  ),
+                  UserTypeSelector(),
+                  const SizedBox(
+                    height: 20,
+                  ),
+                  const SizedBox(
+                    height: 50,
+                  ),
+                  _signup(context),
+                ],
+              ),
+            ),
+          )),
+    );
   }
 
   Widget _emailAddress() {
@@ -151,7 +204,7 @@ class Signup extends StatelessWidget {
   Widget _signup(BuildContext context) {
     return ElevatedButton(
       style: ElevatedButton.styleFrom(
-        backgroundColor: const Color(0xff0D6EFD),
+        backgroundColor: Theme.of(context).primaryColorLight,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(14),
         ),
