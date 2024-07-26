@@ -1,146 +1,157 @@
 import 'package:flutter/material.dart';
+import 'dart:async';
 
-
-class BusTimingScreen extends StatefulWidget {
-  @override
-  _BusTimingScreenState createState() => _BusTimingScreenState();
-}
-
-class _BusTimingScreenState extends State<BusTimingScreen> {
-  String? selectedBus;
-  String? startStop;
-  String? endStop;
-  String? travelTime;
-
-  final List<Map<String, dynamic>> busRoutes = [
-    {
-      'busNumber': '101',
-      'stops': [
-        {'name': 'Stop A', 'arrivalTime': '08:00'},
-        {'name': 'Stop B', 'arrivalTime': '08:15'},
-        {'name': 'Stop C', 'arrivalTime': '08:30'},
-        {'name': 'Stop D', 'arrivalTime': '08:45'},
-        {'name': 'Stop E', 'arrivalTime': '09:00'},
-      ]
-    },
-    {
-      'busNumber': '102',
-      'stops': [
-        {'name': 'Stop X', 'arrivalTime': '09:00'},
-        {'name': 'Stop Y', 'arrivalTime': '09:20'},
-        {'name': 'Stop Z', 'arrivalTime': '09:40'},
-      ]
-    },
-    // Add more bus routes as needed
-  ];
-
+class BusRouteScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Find Bus Timing'),
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          children: <Widget>[
-            DropdownButton<String>(
-              hint: Text('Select Bus'),
-              value: selectedBus,
-              onChanged: (value) {
-                setState(() {
-                  selectedBus = value;
-                  startStop = null;
-                  endStop = null;
-                  travelTime = null;
-                });
-              },
-              items: busRoutes.map((route) {
-                return DropdownMenuItem<String>(
-                  value: route['busNumber'],
-                  child: Text('Bus ${route['busNumber']}'),
-                );
-              }).toList(),
-            ),
-            if (selectedBus != null) ...[
-              DropdownButton<String>(
-                hint: Text('Select Start Stop'),
-                value: startStop,
-                onChanged: (value) {
-                  setState(() {
-                    startStop = value;
-                    endStop = null;
-                    travelTime = null;
-                  });
-                },
-                items: getStopsForSelectedBus()
-                    .map((stop) {
-                      return DropdownMenuItem<String>(
-                        value: stop['name'],
-                        child: Text(stop['name']!),
-                      );
-                    })
-                    .toList(),
-              ),
-              DropdownButton<String>(
-                hint: Text('Select End Stop'),
-                value: endStop,
-                onChanged: (value) {
-                  setState(() {
-                    endStop = value;
-                    calculateTravelTime();
-                  });
-                },
-                items: getStopsForSelectedBus()
-                    .map((stop) {
-                      return DropdownMenuItem<String>(
-                        value: stop['name'],
-                        child: Text(stop['name']!),
-                      );
-                    })
-                    .toList(),
-              ),
-            ],
-            if (travelTime != null) ...[
-              SizedBox(height: 20),
-              Text(
-                'Travel Time: $travelTime',
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-              ),
-            ],
-          ],
-        ),
-      ),
+      body: _BusRouteWidget(),
     );
   }
+}
 
-  List<Map<String, String>> getStopsForSelectedBus() {
-    final busRoute = busRoutes.firstWhere((route) => route['busNumber'] == selectedBus);
-    return List<Map<String, String>>.from(busRoute['stops']);
+class _BusRouteWidget extends StatefulWidget {
+  @override
+  __BusRouteWidgetState createState() => __BusRouteWidgetState();
+}
+
+class __BusRouteWidgetState extends State<_BusRouteWidget> with SingleTickerProviderStateMixin {
+  final String busName = 'X';
+  final List<Map<String, String>> destinations = [
+    {'destination': 'Stop A', 'time': '10:00 AM'},
+    {'destination': 'Stop B', 'time': '10:30 AM'},
+    {'destination': 'Stop C', 'time': '11:00 AM'},
+  ];
+  int currentStopIndex = 0;
+  late AnimationController _animationController;
+  Timer? _timer;
+
+  @override
+  void initState() {
+    super.initState();
+    _animationController = AnimationController(vsync: this, duration: Duration(seconds: 1));
+    _startBusRouteSimulation();
   }
 
-  void calculateTravelTime() {
-    final busRoute = busRoutes.firstWhere((route) => route['busNumber'] == selectedBus);
-    final start = busRoute['stops'].firstWhere((stop) => stop['name'] == startStop);
-    final end = busRoute['stops'].firstWhere((stop) => stop['name'] == endStop);
-
-    final startTime = TimeOfDay(
-      hour: int.parse(start['arrivalTime'].split(':')[0]),
-      minute: int.parse(start['arrivalTime'].split(':')[1]),
-    );
-
-    final endTime = TimeOfDay(
-      hour: int.parse(end['arrivalTime'].split(':')[0]),
-      minute: int.parse(end['arrivalTime'].split(':')[1]),
-    );
-
-    final duration = Duration(
-      hours: endTime.hour - startTime.hour,
-      minutes: endTime.minute - startTime.minute,
-    );
-
-    setState(() {
-      travelTime = '${duration.inHours}h ${duration.inMinutes % 60}m';
+  void _startBusRouteSimulation() {
+    _timer = Timer.periodic(Duration(seconds: 10), (timer) {
+      if (currentStopIndex < destinations.length - 1) {
+        setState(() {
+          currentStopIndex++;
+        });
+        _animationController.forward().then((_) {
+          _animationController.reverse();
+        });
+      } else {
+        timer.cancel();
+      }
     });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      color: Colors.white,
+      child: Column(
+        children: [
+          Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Center(
+              child: Text(
+                'Bus $busName',
+                style: TextStyle(
+                  fontSize: 32,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.black,
+                ),
+              ),
+            ),
+          ),
+          Expanded(
+            child: ListView.builder(
+              itemCount: destinations.length,
+              itemBuilder: (context, index) {
+                final destination = destinations[index];
+                return Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
+                  child: Row(
+                    children: [
+                      Column(
+                        children: [
+                          AnimatedContainer(
+                            duration: Duration(milliseconds: 300),
+                            height: 40,
+                            width: 40,
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              color: index == currentStopIndex ? Colors.purple[100] : Colors.white,
+                              border: Border.all(color: Colors.purple[100]!, width: 2),
+                            ),
+                            child: Center(
+                              child: Icon(
+                                index == currentStopIndex ? Icons.directions_bus : Icons.circle,
+                                color: index == currentStopIndex ? Colors.red : Colors.grey,
+                                size: 30,
+                              ),
+                            ),
+                          ),
+                          if (index != destinations.length - 1)
+                            Container(
+                              height: 60,
+                              width: 2,
+                              color: Colors.grey,
+                            ),
+                        ],
+                      ),
+                      SizedBox(width: 16),
+                      Expanded(
+                        child: Card(
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(15),
+                            side: BorderSide(color: Colors.purple[100]!, width: 2),
+                          ),
+                          elevation: 8,
+                          child: Padding(
+                            padding: const EdgeInsets.all(12.0),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  destination['destination']!,
+                                  style: TextStyle(
+                                    fontSize: 22,
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.black87,
+                                  ),
+                                ),
+                                SizedBox(height: 4),
+                                Text(
+                                  destination['time']!,
+                                  style: TextStyle(
+                                    fontSize: 18,
+                                    color: Colors.grey[700],
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                );
+              },
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  @override
+  void dispose() {
+    _timer?.cancel();
+    _animationController.dispose();
+    super.dispose();
   }
 }
