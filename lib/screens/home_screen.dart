@@ -48,21 +48,19 @@ class _HomeScreenState extends State<HomeScreen> {
         items: <BottomNavyBarItem>[
           BottomNavyBarItem(
             activeColor: colorScheme.primary,
-            icon: Container(padding: EdgeInsets.all(4), child: Icon(Icons.map)),
+            icon: Container(child: Icon(Icons.map)),
             title: const Text('Map'),
           ),
           BottomNavyBarItem(
             activeColor: colorScheme.primary,
             icon: Container(
-              padding: EdgeInsets.all(4),
               child: Icon(Icons.search),
             ),
             title: const Text('Search'),
           ),
           BottomNavyBarItem(
             activeColor: colorScheme.primary,
-            icon: Container(
-                padding: EdgeInsets.all(4), child: Icon(Icons.person)),
+            icon: Container(child: Icon(Icons.person)),
             title: const Text('Profile'),
           ),
         ],
