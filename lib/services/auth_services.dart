@@ -13,21 +13,66 @@ class AuthService {
     required BuildContext context,
   }) async {
     try {
-      // Register the user
       UserCredential userCredential = await FirebaseAuth.instance
           .createUserWithEmailAndPassword(email: email, password: password);
-
-      // Get the user object
       User? user = userCredential.user;
 
       if (user != null) {
-        // Store additional user data in Firestore
-        await FirebaseFirestore.instance.collection('users').doc(user.uid).set({
+        await FirebaseFirestore.instance
+            .collection('public_users')
+            .doc(user.uid)
+            .set({
           'email': email,
-          'displayName': displayName, // Store the display name
+          'displayName': displayName,
         });
       }
+      await Future.delayed(const Duration(seconds: 1));
 
+      // Check if the widget is still mounted before navigating
+      if (Navigator.of(context).context.mounted) {
+        Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+                builder: (BuildContext context) => const HomeScreen()));
+      }
+    } on FirebaseAuthException catch (e) {
+      String message = '';
+      if (e.code == 'weak-password') {
+        message = 'The password provided is too weak.';
+      } else if (e.code == 'email-already-in-use') {
+        message = 'An account already exists with that email.';
+      }
+      Fluttertoast.showToast(
+        msg: message,
+        toastLength: Toast.LENGTH_LONG,
+        gravity: ToastGravity.SNACKBAR,
+        backgroundColor: Colors.black54,
+        textColor: Colors.white,
+        fontSize: 14.0,
+      );
+    }
+  }
+
+  Future<void> driverSignup({
+    required String email,
+    required String password,
+    required String displayName, // Added displayName parameter
+    required BuildContext context,
+  }) async {
+    try {
+      UserCredential userCredential = await FirebaseAuth.instance
+          .createUserWithEmailAndPassword(email: email, password: password);
+      User? user = userCredential.user;
+
+      if (user != null) {
+        await FirebaseFirestore.instance
+            .collection('driver_users')
+            .doc(user.uid)
+            .set({
+          'email': email,
+          'displayName': displayName,
+        });
+      }
       await Future.delayed(const Duration(seconds: 1));
 
       // Check if the widget is still mounted before navigating
