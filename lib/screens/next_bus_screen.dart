@@ -27,59 +27,65 @@ class _BusListScreenState extends State<BusListScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: DropdownButton<String>(
-            value: selectedPlace,
-            onChanged: (newValue) {
-              setState(() {
-                selectedPlace = newValue!;
-              });
-            },
-            items: <String>["Angamaly", "Aluva", "Kakkanad"]
-                .map<DropdownMenuItem<String>>((String value) {
-              return DropdownMenuItem<String>(
-                value: value,
-                child: Text(value),
-              );
-            }).toList(),
-          ),
-        ),
-        Expanded(
-          child: FutureBuilder<List<QueryDocumentSnapshot>>(
-            future: _getBusesWithSelectedStop(),
-            builder: (context, snapshot) {
-              if (snapshot.connectionState == ConnectionState.waiting) {
-                return Center(child: CircularProgressIndicator());
-              }
-              if (!snapshot.hasData || snapshot.data!.isEmpty) {
-                return Center(
-                    child: Text('No buses with stop at $selectedPlace'));
-              }
+    return Container(
+      color: Theme.of(context).scaffoldBackgroundColor,
+      child: SafeArea(
+        child: Column(
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: DropdownButton<String>(
+                value: selectedPlace,
+                onChanged: (newValue) {
+                  setState(() {
+                    selectedPlace = newValue!;
+                  });
+                },
+                items: <String>["Angamaly", "Aluva", "Kakkanad"]
+                    .map<DropdownMenuItem<String>>((String value) {
+                  return DropdownMenuItem<String>(
+                    value: value,
+                    child: Text(value),
+                  );
+                }).toList(),
+              ),
+            ),
+            Expanded(
+              child: FutureBuilder<List<QueryDocumentSnapshot>>(
+                future: _getBusesWithSelectedStop(),
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return Center(child: CircularProgressIndicator());
+                  }
+                  if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                    return Center(
+                        child: Text('No buses with stop at $selectedPlace'));
+                  }
 
-              return ListView.builder(
-                itemCount: snapshot.data!.length,
-                itemBuilder: (context, index) {
-                  var bus = snapshot.data![index];
-                  return ListTile(
-                    title: Text(bus['name']),
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => BusStopsScreen(busId: bus.id),
-                        ),
+                  return ListView.builder(
+                    itemCount: snapshot.data!.length,
+                    itemBuilder: (context, index) {
+                      var bus = snapshot.data![index];
+                      return ListTile(
+                        title: Text(bus['name']),
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) =>
+                                  BusStopsScreen(busId: bus.id),
+                            ),
+                          );
+                        },
                       );
                     },
                   );
                 },
-              );
-            },
-          ),
+              ),
+            ),
+          ],
         ),
-      ],
+      ),
     );
   }
 }

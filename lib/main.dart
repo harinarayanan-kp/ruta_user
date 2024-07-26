@@ -41,9 +41,9 @@ class MyApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         title: 'Flutter Demo',
         theme: ThemeData(
-          colorScheme: lightcolorscheme,
-          useMaterial3: true,
-        ),
+            colorScheme: lightcolorscheme,
+            useMaterial3: true,
+            scaffoldBackgroundColor: lightcolorscheme.surfaceBright),
         home: HomeScreen(),
         routes: {
           '/login': (context) => Login(),
