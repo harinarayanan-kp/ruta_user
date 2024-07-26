@@ -3,6 +3,7 @@ import 'package:ruta_user/firebase_options.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:ruta_user/screens/home_screen.dart';
 import 'package:ruta_user/screens/login_screen.dart';
+import 'package:ruta_user/screens/reg_screen.dart';
 import 'package:ruta_user/wrapper.dart';
 
 void main() async {
@@ -16,6 +17,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
@@ -25,7 +27,7 @@ class MyApp extends StatelessWidget {
       routes: {
         '/login': (context) => const LoginScreen(),
         '/home': (context) => const HomeScreen(),
-        // '/register': (context) => Signup(),
+        '/register': (context) => Signup(),
         // '/schedule': (context) => const SchedulesScreen(),
       },
     );
