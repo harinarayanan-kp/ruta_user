@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "509226925232",
+    "project_id": "ruta-50e39",
+    "storage_bucket": "ruta-50e39.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:509226925232:android:e14fa055e6b45bdb4e8f75",
+        "android_client_info": {
+          "package_name": "com.example.ruta_user"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCRK9gQkIKqsQ9wjVQgrqjvdkumVjsXoIk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
