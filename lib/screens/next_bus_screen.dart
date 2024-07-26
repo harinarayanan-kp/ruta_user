@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:ruta_user/screens/busStop_screen.dart';
+import 'package:ruta_user/services/auth_services.dart';
 
 class BusListScreen extends StatefulWidget {
   @override
@@ -32,6 +33,7 @@ class _BusListScreenState extends State<BusListScreen> {
       child: SafeArea(
         child: Column(
           children: [
+            _logout(context),
             Padding(
               padding: const EdgeInsets.all(16.0),
               child: DropdownButton<String>(
@@ -86,6 +88,15 @@ class _BusListScreenState extends State<BusListScreen> {
           ],
         ),
       ),
+    );
+  }
+
+  Widget _logout(BuildContext context) {
+    return ElevatedButton(
+      onPressed: () async {
+        await AuthService().signout(context: context);
+      },
+      child: const Text("Sign Out"),
     );
   }
 }
