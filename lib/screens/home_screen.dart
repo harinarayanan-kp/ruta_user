@@ -33,24 +33,36 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final ColorScheme colorScheme = Theme.of(context).colorScheme;
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('RUTA'),
       ),
       bottomNavigationBar: BottomNavyBar(
+        containerHeight: 75,
+        curve: Curves.ease,
         selectedIndex: _selectedIndex,
+        backgroundColor: colorScheme.surface,
         onItemSelected: _onItemTapped,
         items: <BottomNavyBarItem>[
           BottomNavyBarItem(
-            icon: const Icon(Icons.map),
+            activeColor: colorScheme.primary,
+            icon: Container(padding: EdgeInsets.all(4), child: Icon(Icons.map)),
             title: const Text('Map'),
           ),
           BottomNavyBarItem(
-            icon: const Icon(Icons.search),
+            activeColor: colorScheme.primary,
+            icon: Container(
+              padding: EdgeInsets.all(4),
+              child: Icon(Icons.search),
+            ),
             title: const Text('Search'),
           ),
           BottomNavyBarItem(
-            icon: const Icon(Icons.person),
+            activeColor: colorScheme.primary,
+            icon: Container(
+                padding: EdgeInsets.all(4), child: Icon(Icons.person)),
             title: const Text('Profile'),
           ),
         ],
