@@ -8,6 +8,8 @@ class Signup extends StatelessWidget {
 
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+  final TextEditingController _displayNameController =
+      TextEditingController(); // Added controller
 
   @override
   Widget build(BuildContext context) {
@@ -35,11 +37,18 @@ class Signup extends StatelessWidget {
                 const SizedBox(
                   height: 80,
                 ),
+                _displayName(), // Added TextFormField for display name
+                const SizedBox(
+                  height: 20,
+                ),
                 _emailAddress(),
                 const SizedBox(
                   height: 20,
                 ),
                 _password(),
+                const SizedBox(
+                  height: 20,
+                ),
                 const SizedBox(
                   height: 50,
                 ),
@@ -67,7 +76,7 @@ class Signup extends StatelessWidget {
           controller: _emailController,
           decoration: InputDecoration(
               filled: true,
-              hintText: 'mahdiforwork@gmail.com',
+              hintText: 'example@gmail.com',
               hintStyle: const TextStyle(
                   color: Color(0xff6A6A6A),
                   fontWeight: FontWeight.normal,
@@ -108,6 +117,37 @@ class Signup extends StatelessWidget {
     );
   }
 
+  Widget _displayName() {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        const Text(
+          'Display Name',
+          style: TextStyle(
+              color: Colors.black, fontWeight: FontWeight.normal, fontSize: 16),
+        ),
+        const SizedBox(
+          height: 16,
+        ),
+        TextField(
+          controller: _displayNameController,
+          decoration: InputDecoration(
+              filled: true,
+              hintText: 'Name',
+              hintStyle: const TextStyle(
+                  color: Color(0xff6A6A6A),
+                  fontWeight: FontWeight.normal,
+                  fontSize: 14),
+              fillColor: const Color(0xffF7F7F9),
+              border: OutlineInputBorder(
+                  borderSide: BorderSide.none,
+                  borderRadius: BorderRadius.circular(14))),
+        )
+      ],
+    );
+  }
+
   Widget _signup(BuildContext context) {
     return ElevatedButton(
       style: ElevatedButton.styleFrom(
@@ -120,9 +160,11 @@ class Signup extends StatelessWidget {
       ),
       onPressed: () async {
         await AuthService().signup(
-            email: _emailController.text,
-            password: _passwordController.text,
-            context: context);
+          email: _emailController.text,
+          password: _passwordController.text,
+          displayName: _displayNameController.text, // Pass display name
+          context: context,
+        );
       },
       child: const Text("Sign Up"),
     );
@@ -158,26 +200,3 @@ class Signup extends StatelessWidget {
     );
   }
 }
-
-// class Timeline extends StatelessWidget {
-//   final List<String> stops;
-//   const Timeline({super.key, required this.stops});
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//       appBar: AppBar(
-//         title: const Text("Bus Route Timeline"),
-//       ),
-//       body: ListView.builder(
-//         itemCount: stops.length,
-//         itemBuilder: (context, index) {
-//           final stop = stops[index];
-
-//           return ListTile(
-//             title: Text(stop),
-//           );
-//         },
-//       ),
-//     );
-//   }
-// }
