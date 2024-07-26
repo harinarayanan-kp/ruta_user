@@ -19,7 +19,7 @@ void main() async {
   runApp(const MyApp());
 }
 
-Color defaultcolorscheme = Color.fromARGB(255, 236, 174, 44);
+Color defaultcolorscheme = const Color.fromARGB(255, 236, 174, 44);
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
@@ -44,7 +44,7 @@ class MyApp extends StatelessWidget {
           colorScheme: lightcolorscheme,
           useMaterial3: true,
         ),
-        home: BusListScreen(),
+        home: HomeScreen(),
         routes: {
           '/login': (context) => Login(),
           '/home': (context) => const HomeScreen(),

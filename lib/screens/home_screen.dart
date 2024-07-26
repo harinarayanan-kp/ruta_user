@@ -1,10 +1,10 @@
 import 'package:bottom_navy_bar/bottom_navy_bar.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:ruta_user/models/place.dart';
+import 'package:ruta_user/screens/busStop_screen.dart';
 import 'package:ruta_user/screens/busstop.dart';
 import 'package:ruta_user/screens/map_screen.dart';
+import 'package:ruta_user/screens/next_bus_screen.dart';
+import 'package:ruta_user/screens/schedule.dart';
 import 'package:ruta_user/screens/to_from_screen.dart';
 import 'package:ruta_user/services/auth_services.dart';
 
@@ -20,10 +20,10 @@ class _HomeScreenState extends State<HomeScreen> {
 
   final bool _isLoading = false;
 
-  static const List<Widget> _widgetOptions = <Widget>[
-    MapScreen(),
-    setRouteScreen(),
-    BusstopApp(),
+  static final List<Widget> _widgetOptions = <Widget>[
+    const MapScreen(),
+    const setRouteScreen(),
+    BusListScreen(),
   ];
 
   void _onItemTapped(int index) {
@@ -55,28 +55,20 @@ class _HomeScreenState extends State<HomeScreen> {
           BottomNavyBarItem(
             activeColor: colorScheme.primary,
             icon: Container(
-              child: Icon(Icons.search),
+              child: Icon(Icons.sync_alt),
             ),
-            title: const Text('Search'),
+            title: const Text('Route'),
           ),
           BottomNavyBarItem(
             activeColor: colorScheme.primary,
-            icon: Container(child: Icon(Icons.person)),
-            title: const Text('Profile'),
+            icon: Container(child: Icon(Icons.directions_bus)),
+            title: const Text('Next Bus'),
           ),
         ],
       ),
       backgroundColor: Colors.white,
       body: SafeArea(
-        child: SingleChildScrollView(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              if (_isLoading) const Center(child: CircularProgressIndicator()),
-              if (!_isLoading) _widgetOptions.elementAt(_selectedIndex),
-            ],
-          ),
-        ),
+        child: _widgetOptions.elementAt(_selectedIndex),
       ),
     );
   }
