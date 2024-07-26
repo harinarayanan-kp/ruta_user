@@ -103,7 +103,7 @@ class _MapScreenState extends State<BusMapScreen> {
         child: Column(
           children: [
             SizedBox(
-              height: MediaQuery.of(context).size.height * 0.7,
+              height: MediaQuery.of(context).size.height * 0.6,
               width: MediaQuery.of(context).size.width,
               child: Stack(
                 children: [
@@ -142,11 +142,14 @@ class _MapScreenState extends State<BusMapScreen> {
               child: Column(
                 children: [
                   SizedBox(
-                    height: 30,
+                    height: 50,
                     child: Container(
                       decoration: BoxDecoration(
                           borderRadius: BorderRadius.all(Radius.circular(10)),
-                          color: Theme.of(context).primaryColorDark),
+                          color: Theme.of(context)
+                              .colorScheme
+                              .secondary
+                              .withOpacity(0.5)),
                       child: Center(
                         child: Text(
                           'data',
@@ -154,7 +157,45 @@ class _MapScreenState extends State<BusMapScreen> {
                         ),
                       ),
                     ),
-                  )
+                  ),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  SizedBox(
+                    height: 50,
+                    child: Container(
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.all(Radius.circular(10)),
+                        color: Theme.of(context).colorScheme.secondary,
+                      ),
+                      child: Center(
+                        child: Text(
+                          'data',
+                          selectionColor: Colors.black,
+                        ),
+                      ),
+                    ),
+                  ),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  SizedBox(
+                    height: 50,
+                    child: Container(
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.all(Radius.circular(10)),
+                          color: Theme.of(context)
+                              .colorScheme
+                              .secondary
+                              .withOpacity(0.5)),
+                      child: Center(
+                        child: Text(
+                          'data',
+                          selectionColor: Colors.black,
+                        ),
+                      ),
+                    ),
+                  ),
                 ],
               ),
             )
