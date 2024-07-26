@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ruta_user/screens/map_screen.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -6,7 +7,7 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const Scaffold(
-      body: Text('HOME SCREEN'),
+      body: MapScreen(),
     );
   }
 }
