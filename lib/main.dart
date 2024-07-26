@@ -3,9 +3,11 @@ import 'package:ruta_user/firebase_options.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:ruta_user/screens/home_screen.dart';
 import 'package:ruta_user/screens/login_screen.dart';
+import 'package:ruta_user/screens/map_screen.dart';
 import 'package:ruta_user/screens/reg_screen.dart';
+import 'package:ruta_user/screens/schedule.dart';
 import 'package:ruta_user/screens/to_from_screen.dart';
-import 'package:ruta_user/wrapper.dart';
+// import 'package:ruta_user/wrapper.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -24,7 +26,7 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: const HomeScreen(),
+      home: HomeScreen(),
       routes: {
         '/login': (context) => Login(),
         '/home': (context) => const HomeScreen(),

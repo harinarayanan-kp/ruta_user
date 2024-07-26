@@ -158,3 +158,26 @@ class Signup extends StatelessWidget {
     );
   }
 }
+
+// class Timeline extends StatelessWidget {
+//   final List<String> stops;
+//   const Timeline({super.key, required this.stops});
+//   @override
+//   Widget build(BuildContext context) {
+//     return Scaffold(
+//       appBar: AppBar(
+//         title: const Text("Bus Route Timeline"),
+//       ),
+//       body: ListView.builder(
+//         itemCount: stops.length,
+//         itemBuilder: (context, index) {
+//           final stop = stops[index];
+
+//           return ListTile(
+//             title: Text(stop),
+//           );
+//         },
+//       ),
+//     );
+//   }
+// }

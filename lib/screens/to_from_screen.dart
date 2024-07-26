@@ -1,9 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:ruta_user/models/place.dart';
-import 'package:ruta_user/screens/map_screen.dart';
-import 'package:ruta_user/services/auth_services.dart';
+import 'package:ruta_user/screens/schedule.dart';
 
 class setRouteScreen extends StatefulWidget {
   const setRouteScreen({super.key});
@@ -162,6 +160,7 @@ class _setRouteScreenState extends State<setRouteScreen> {
               ),
 
               const SizedBox(height: 30),
+              SchedulesScreen()
             ],
           ),
         ),

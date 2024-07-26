@@ -5,4 +5,6 @@ class BusSchedule {
   final CollectionReference stops;
 
   BusSchedule(this.name, this.stops);
+
+  get stopsData => null;
 }
