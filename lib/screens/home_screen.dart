@@ -3,6 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:ruta_user/models/place.dart';
+import 'package:ruta_user/screens/busstop.dart';
 import 'package:ruta_user/screens/map_screen.dart';
 import 'package:ruta_user/screens/to_from_screen.dart';
 import 'package:ruta_user/services/auth_services.dart';
@@ -22,7 +23,7 @@ class _HomeScreenState extends State<HomeScreen> {
   static const List<Widget> _widgetOptions = <Widget>[
     MapScreen(),
     setRouteScreen(),
-    Center(child: Text('Profile Page')),
+    BusstopApp(),
   ];
 
   void _onItemTapped(int index) {
