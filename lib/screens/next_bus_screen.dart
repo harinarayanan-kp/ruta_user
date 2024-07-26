@@ -4,12 +4,39 @@ import 'package:ruta_user/screens/busStop_screen.dart';
 import 'package:ruta_user/services/auth_services.dart';
 
 class BusListScreen extends StatefulWidget {
+  const BusListScreen({super.key});
+
   @override
   _BusListScreenState createState() => _BusListScreenState();
 }
 
 class _BusListScreenState extends State<BusListScreen> {
-  String selectedPlace = "Angamaly";
+  String selectedPlace = "";
+  List<String> places = [];
+
+  @override
+  void initState() {
+    super.initState();
+    _fetchPlaces();
+  }
+
+  Future<void> _fetchPlaces() async {
+    try {
+      var locationsSnapshot =
+          await FirebaseFirestore.instance.collection('locationData').get();
+      var fetchedPlaces = locationsSnapshot.docs
+          .map((doc) => doc['placeName'] as String)
+          .toList();
+      setState(() {
+        places = fetchedPlaces;
+        if (places.isNotEmpty) {
+          selectedPlace = places.first;
+        }
+      });
+    } catch (e) {
+      print('Error fetching places: $e');
+    }
+  }
 
   Future<List<QueryDocumentSnapshot>> _getBusesWithSelectedStop() async {
     var busSchedules =
@@ -36,21 +63,23 @@ class _BusListScreenState extends State<BusListScreen> {
             _logout(context),
             Padding(
               padding: const EdgeInsets.all(16.0),
-              child: DropdownButton<String>(
-                value: selectedPlace,
-                onChanged: (newValue) {
-                  setState(() {
-                    selectedPlace = newValue!;
-                  });
-                },
-                items: <String>["Angamaly", "Aluva", "Kakkanad"]
-                    .map<DropdownMenuItem<String>>((String value) {
-                  return DropdownMenuItem<String>(
-                    value: value,
-                    child: Text(value),
-                  );
-                }).toList(),
-              ),
+              child: places.isEmpty
+                  ? Center(child: CircularProgressIndicator())
+                  : DropdownButton<String>(
+                      value: selectedPlace,
+                      onChanged: (newValue) {
+                        setState(() {
+                          selectedPlace = newValue!;
+                        });
+                      },
+                      items:
+                          places.map<DropdownMenuItem<String>>((String value) {
+                        return DropdownMenuItem<String>(
+                          value: value,
+                          child: Text(value),
+                        );
+                      }).toList(),
+                    ),
             ),
             Expanded(
               child: FutureBuilder<List<QueryDocumentSnapshot>>(
@@ -68,17 +97,24 @@ class _BusListScreenState extends State<BusListScreen> {
                     itemCount: snapshot.data!.length,
                     itemBuilder: (context, index) {
                       var bus = snapshot.data![index];
-                      return ListTile(
-                        title: Text(bus['name']),
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) =>
-                                  BusStopsScreen(busId: bus.id),
-                            ),
-                          );
-                        },
+                      return Card(
+                        elevation: 4.0,
+                        margin: const EdgeInsets.symmetric(
+                            vertical: 8.0, horizontal: 16.0),
+                        child: ListTile(
+                          leading:
+                              Icon(Icons.directions_bus, color: Colors.blue),
+                          title: Text(bus['name']),
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) =>
+                                    BusStopsScreen(busId: bus.id),
+                              ),
+                            );
+                          },
+                        ),
                       );
                     },
                   );
