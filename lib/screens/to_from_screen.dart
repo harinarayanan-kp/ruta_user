@@ -159,8 +159,7 @@ class _setRouteScreenState extends State<setRouteScreen> {
 
                 const SizedBox(height: 30),
                 const SingleChildScrollView(
-                    physics: BouncingScrollPhysics(),
-                    child: SizedBox(height: 500, child: SchedulesScreen())),
+                    child: SizedBox(height: 600, child: SchedulesScreen())),
               ],
             ),
           ),
