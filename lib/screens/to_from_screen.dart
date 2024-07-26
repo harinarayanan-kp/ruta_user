@@ -160,7 +160,7 @@ class _setRouteScreenState extends State<setRouteScreen> {
               ),
 
               const SizedBox(height: 30),
-              SchedulesScreen()
+              SizedBox(height: 200, child: SchedulesScreen())
             ],
           ),
         ),
