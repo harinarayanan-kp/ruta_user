@@ -1,16 +1,10 @@
-# ruta_user
+# RUTA
+RUTA is a user-friendly app designed to streamline daily commutes by providing accurate, real-time information on available buses for preferred routes and times. Built using Flutter, Firebase, and the Google Maps API, RUTA offers seamless navigation, real-time updates, and efficient journey planning to reduce wait times and improve the commuting experience.
 
-A new Flutter project.
-
-## Getting Started
-
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+EPILOGUE 2.0 Hackathon Project
+TEAM Data Dynamo
+Team members
+[Harinarayanan K P](https://github.com/harinarayanan-kp/)
+[Anand Anil](https://github.com/AnandAnil)
+[Irin Maria](https://github.com/MianaPrinson)
+[Sayoojya S](https://github.com/SAYOOJYAS)
