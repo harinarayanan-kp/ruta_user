@@ -4,6 +4,11 @@ RUTA is a user-friendly app designed to streamline daily commutes by providing a
 
 ![preview_ruta](https://github.com/user-attachments/assets/f9ae35c6-1b4e-46eb-a76e-eaf55a35ce97)
 
+To run locally:
+clone
+flutter pub get
+flutter run
+
 EPILOGUE 2.0 Hackathon Project
 
 TEAM Data Dynamo
